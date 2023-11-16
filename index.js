@@ -97,6 +97,16 @@ app.get("/movies", (req, res) => {
   res.status(200).json(topMovies);
 });
 
+app.get("/movies/:title", (req, res) => {
+  const title = req.params.title;
+  const movie = topMovies.find((movie) => movie.title === title);
+
+  if (movie) {
+    res.status(200).json(movie);
+  } else {
+    res.status(400).send("No such movie exists.");
+  }
+});
 
 //Error Handling
 app.use((err, req, res, next) => {
