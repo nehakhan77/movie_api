@@ -11,8 +11,16 @@ app.use(bodyParser.json());
 
 let users = [
   {
+    id: 1,
     name: "Neha Khan",
     age: "26",
+    favoriteMovies: [],
+  },
+  {
+    id: 2,
+    name: "Joe",
+    age: "26",
+    favoriteMovies: [],
   },
 ];
 
@@ -189,6 +197,69 @@ app.post("/users", (req, res) => {
     res.status(201).send(newUser);
   } else {
     res.status(400).send("User name is required to register.");
+  }
+});
+
+app.post("/users/:id/:movieTitle", (req, res) => {
+  const id = req.params.id;
+  const movieTitle = req.params.movieTitle;
+
+  let user = users.find((user) => user.id == id);
+
+  if (user) {
+    user.favoriteMovies.push(movieTitle);
+    res
+      .status(200)
+      .send(movieTitle + " has been added to user " + id + "'s list");
+  } else {
+    res.status(400).send("No such user");
+  }
+});
+
+//UPDATE
+app.put("/users/:id", (req, res) => {
+  const id = req.params.id;
+  const updatedUser = req.body;
+
+  let user = users.find((user) => user.id == id);
+
+  if (user) {
+    user.name = updatedUser.name;
+    res.status(200).send(user);
+  } else {
+    res.status(400).send("No such user");
+  }
+});
+
+//DELETE
+app.delete("/users/:id/:movieTitle", (req, res) => {
+  const id = req.params.id;
+  const movieTitle = req.params.movieTitle;
+
+  let user = users.find((user) => user.id == id);
+
+  if (user) {
+    user.favoriteMovies = user.favoriteMovies.filter(
+      (title) => title !== movieTitle
+    );
+    res
+      .status(200)
+      .send(movieTitle + " has been removed from user " + id + "'s list");
+  } else {
+    res.status(400).send("No such user");
+  }
+});
+
+app.delete("/users/:id", (req, res) => {
+  const id = req.params.id;
+
+  let user = users.find((user) => user.id == id);
+
+  if (user) {
+    users = users.filter((user) => user.id != id);
+    res.status(200).send("User " + id + " has been deleted.");
+  } else {
+    res.status(400).send("There is no such user");
   }
 });
 
