@@ -59,6 +59,17 @@ app.get("/movies", async (req, res) => {
     });
 });
 
+//READ movie list by movie title
+app.get("/movies/:Title", async (req, res) => {
+  await Movies.findOne({ Title: req.params.Title })
+    .then((movie) => {
+      res.json(movie);
+    })
+    .catch((err) => {
+      res.status(500).send("Error: " + err);
+    });
+});
+
 //Error Handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
