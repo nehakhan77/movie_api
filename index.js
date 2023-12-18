@@ -40,7 +40,7 @@ let auth = require("./auth")(app);
 app.use(bodyParser.json()); //any time using req.body, the data will be expected to be in JSON format
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static("public"));
+//log all incoming requests
 app.use(morgan("common"));
 
 // Import passport and passport.js
@@ -296,6 +296,8 @@ app.delete(
       });
   }
 );
+
+app.use(express.static("public"));
 
 //Error Handling
 app.use((err, req, res, next) => {
