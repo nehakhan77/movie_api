@@ -5,9 +5,8 @@ const express = require("express"),
   mongoose = require("mongoose"),
   Models = require("./models.js"),
   cors = require("cors"),
-  punycode = require("punycode/");
+  { check, validationResult } = require("express-validator");
 
-const { check, validationResult } = require("express-validator");
 const app = express();
 
 //Import CORS
@@ -52,6 +51,7 @@ require("./passport");
 const Movies = Models.Movie;
 const Users = Models.User;
 
+// connects Mongoose to the DB in Mongo Atlas
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
