@@ -54,6 +54,7 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 // connects Mongoose to the DB in Mongo Atlas
+//mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -173,7 +174,7 @@ app.post(
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-    let hashedPassword = Users.hashedPassword(req.body.Password);
+    let hashedPassword = Users.hashPassword(req.body.Password);
     await Users.findOne({ Username: req.body.Username })
       //Search to see if a user with the requested username already exists
       .then((user) => {
@@ -311,3 +312,9 @@ const port = process.env.PORT || 8080;
 app.listen(port, "0.0.0.0.", () => {
   console.log("Listening on Port " + port);
 });
+
+// MongoDB connection error handling
+mongoose.connection.on(
+  "error",
+  console.error.bind(console, "MongoDB connection error:")
+);
