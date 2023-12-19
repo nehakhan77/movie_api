@@ -8,6 +8,8 @@ const express = require("express"),
   { check, validationResult } = require("express-validator");
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //Import CORS
 let allowedOrigins = [
