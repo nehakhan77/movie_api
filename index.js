@@ -4,6 +4,7 @@ const express = require("express"),
   uuid = require("uuid"),
   mongoose = require("mongoose"),
   Models = require("./models.js"),
+  path = require("path"),
   cors = require("cors"),
   { check, validationResult } = require("express-validator");
 
@@ -48,6 +49,9 @@ app.use(morgan("common"));
 // Import passport and passport.js
 const passport = require("passport");
 require("./passport");
+
+//Load documentation page
+app.use(express.static("public"));
 
 //Require Mongoose models from model.ks
 const Movies = Models.Movie;
@@ -299,8 +303,6 @@ app.delete(
       });
   }
 );
-
-app.use(express.static("public"));
 
 //Error Handling
 app.use((err, req, res, next) => {
