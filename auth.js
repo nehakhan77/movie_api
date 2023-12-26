@@ -19,11 +19,12 @@ module.exports = (router) => {
     passport.authenticate(
       "local",
       { session: false },
-      function callback(error, user, info) {
+      function callback(error, user) {
         if (error || !user) {
           return res.status(400).json({
             message: "Something is not right",
             user: user,
+            error,
           });
         }
         req.login(user, { session: false }, (error) => {
