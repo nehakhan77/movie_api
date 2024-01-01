@@ -19,18 +19,16 @@ passport.use(
         .then((user) => {
           if (!user) {
             console.log("incorrect username");
-            const error = { message: "Incorrect username or password" };
-            return callback(error, user);
+            return callback(null, false, {
+              message: "Incorrect username or password",
+            });
           }
           if (!user.validatePassword(password)) {
-            console.log("Incorrect Password");
-            const error = { message: "Incorrect Password." };
-            user = false;
-            return callback(error, user);
+            console.log("incorrect password");
+            return callback(null, false, { message: "Incorrect password." });
           }
           console.log("finished");
-          const error = null;
-          return callback(error, user);
+          return callback(null, user);
         })
         .catch((error) => {
           if (error) {
