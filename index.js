@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 //Import CORS
 let allowedOrigins = [
   "http://localhost:8080",
+  "http://localhost:1234",
   "http://testsite.com",
   "https://careerfoundry-movieflix-59ee318aca62.herokuapp.com",
 ];
