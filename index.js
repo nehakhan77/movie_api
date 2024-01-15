@@ -108,6 +108,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), async (req,
             console.error(err);
             res.status(500).send('Error: ' + err);
         });
+      });
         
 
 //READ movie list by movie title
