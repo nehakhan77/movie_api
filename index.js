@@ -210,7 +210,7 @@ app.post(
   }
 );
 
-//UPDATE User's username
+//UPDATE User's info
 app.put(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
