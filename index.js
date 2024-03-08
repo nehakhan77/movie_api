@@ -18,6 +18,7 @@ let allowedOrigins = [
   "http://localhost:1234",
   "http://testsite.com",
   "https://careerfoundry-movieflix-59ee318aca62.herokuapp.com",
+  "https://myflix-nehakhan77.netlify.app",
 ];
 //allow specific set of origins to access your API
 app.use(
@@ -99,17 +100,20 @@ app.get(
 );
 
 // READ movie list
-app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get(
+  "/movies",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
     await Movies.find()
-        .then((movies) => {
-            res.status(201).json(movies);
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send('Error: ' + err);
-        });
+      .then((movies) => {
+        res.status(201).json(movies);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
       });
-        
+  }
+);
 
 //READ movie list by movie title
 app.get(
