@@ -11,7 +11,7 @@ const { check, validationResult } = require("express-validator");
 const app = express();
 
 //Import CORS
-let allowedOrigins = ["http://localhost:8080", "http://testsite.com"];
+let allowedOrigins = ["http://localhost:8080", "http://testsite.com","http://localhost:4200" ];
 //allow specific set of origins to access your API
 app.use(
   cors({
