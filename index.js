@@ -4,14 +4,16 @@ const express = require("express"),
   uuid = require("uuid"),
   mongoose = require("mongoose"),
   Models = require("./models.js"),
+  path = require("path"),
   cors = require("cors"),
-  punycode = require("punycode/");
+  { check, validationResult } = require("express-validator");
 
-const { check, validationResult } = require("express-validator");
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //Import CORS
-let allowedOrigins = ["http://localhost:8080", "http://testsite.com","http://localhost:4200" ];
+let allowedOrigins = ["http://localhost:8080", "http://testsite.com"];
 //allow specific set of origins to access your API
 app.use(
   cors({
@@ -37,18 +39,23 @@ let auth = require("./auth")(app);
 app.use(bodyParser.json()); //any time using req.body, the data will be expected to be in JSON format
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static("public"));
+//log all incoming requests
 app.use(morgan("common"));
 
 // Import passport and passport.js
 const passport = require("passport");
 require("./passport");
 
+//Load documentation page
+app.use(express.static("public"));
+
 //Require Mongoose models from model.ks
 const Movies = Models.Movie;
 const Users = Models.User;
 
-mongoose.connect("mongodb://localhost:27017/myflixDB", {
+// connects Mongoose to the DB in Mongo Atlas
+//mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -71,16 +78,20 @@ app.get("/users", async (req, res) => {
 });
 
 // READ user by username
-app.get("/users/:Username", async (req, res) => {
-  await Users.findOne({ Username: req.params.Username })
-    .then((user) => {
-      res.json(user);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Error: " + err);
-    });
-});
+app.get(
+  "/users/:Username",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    await Users.findOne({ Username: req.params.Username })
+      .then((user) => {
+        res.json(user);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
+  }
+);
 
 // READ movie list
 app.get(
@@ -167,7 +178,7 @@ app.post(
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-    let hashedPassword = Users.hashedPassword(req.body.Password);
+    let hashedPassword = Users.hashPassword(req.body.Password);
     await Users.findOne({ Username: req.body.Username })
       //Search to see if a user with the requested username already exists
       .then((user) => {
@@ -197,7 +208,7 @@ app.post(
   }
 );
 
-//UPDATE User's username
+//UPDATE User's info
 app.put(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
@@ -299,8 +310,13 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something broke!");
 });
 
-//Listening for Request
 const port = process.env.PORT || 8080;
-app.listen(port, "0.0.0.0", () => {
-  console.log("Listening on Port" + port);
+app.listen(port, "0.0.0.0.", () => {
+  console.log("Listening on Port " + port);
 });
+
+// MongoDB connection error handling
+mongoose.connection.on(
+  "error",
+  console.error.bind(console, "MongoDB connection error:")
+);
