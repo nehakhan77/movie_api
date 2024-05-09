@@ -73,7 +73,7 @@ app.get("/users", async (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send("Error: " + err);
+      return res.status(422).json({ errors: errors.array() });
     });
 });
 
@@ -88,7 +88,7 @@ app.get(
       })
       .catch((err) => {
         console.error(err);
-        res.status(500).send("Error: " + err);
+        return res.status(422).json({ errors: errors.array() });
       });
   }
 );
@@ -104,7 +104,7 @@ app.get(
       })
       .catch((err) => {
         console.error(err);
-        res.status(500).send("Error: " + err);
+        return res.status(422).json({ errors: errors.array() });
       });
   }
 );
@@ -119,7 +119,7 @@ app.get(
         res.json(movie);
       })
       .catch((err) => {
-        res.status(500).send("Error: " + err);
+        return res.status(422).json({ errors: errors.array() });
       });
   }
 );
@@ -134,7 +134,7 @@ app.get(
         res.status(200).json(movie.Genre.Description);
       })
       .catch((err) => {
-        res.status(500).send("Error: " + err);
+        return res.status(422).json({ errors: errors.array() });
       });
   }
 );
@@ -149,7 +149,7 @@ app.get(
         res.status(200).json(movie.Director);
       })
       .catch((err) => {
-        res.status(500).send("Error: " + err);
+        return res.status(422).json({ errors: errors.array() });
       });
   }
 );
@@ -197,13 +197,13 @@ app.post(
             })
             .catch((error) => {
               console.error(error);
-              res.status(500).send("Error: " + error);
+              return res.status(422).json({ errors: errors.array() });
             });
         }
       })
       .catch((error) => {
         console.error(error);
-        res.status(500).send("Error: " + error);
+        return res.status(422).json({ errors: errors.array() });
       });
   }
 );
@@ -235,7 +235,7 @@ app.put(
       })
       .catch((err) => {
         console.error(err);
-        res.status(500).send("Error: " + err);
+        return res.status(422).json({ errors: errors.array() });
       });
   }
 );
@@ -257,7 +257,7 @@ app.post(
       })
       .catch((err) => {
         console.error(err);
-        res.status(500).send("Error: " + err);
+        return res.status(422).json({ errors: errors.array() });
       });
   }
 );
@@ -277,7 +277,7 @@ app.delete(
       })
       .catch((err) => {
         console.error(err);
-        res.status(500).send("Error: " + err);
+        return res.status(422).json({ errors: errors.array() });
       });
   }
 );
