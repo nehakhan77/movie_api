@@ -197,13 +197,13 @@ app.post(
             })
             .catch((error) => {
               console.error(error);
-              return res.status(422).json({ errors: errors.array() });
+              res.status(500).send('Error: ' + err);
             });
         }
       })
       .catch((error) => {
         console.error(error);
-        return res.status(422).json({ errors: errors.array() });
+        res.status(500).send('Error: ' + err);
       });
   }
 );
@@ -235,7 +235,7 @@ app.put(
       })
       .catch((err) => {
         console.error(err);
-        return res.status(422).json({ errors: errors.array() });
+        res.status(500).send('Error: ' + err);
       });
   }
 );
