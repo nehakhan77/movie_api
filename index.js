@@ -73,7 +73,7 @@ app.get("/users", async (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      return res.status(422).json({ errors: errors.array() });
+      res.status(500).send("Error: " + err);
     });
 });
 
@@ -88,7 +88,7 @@ app.get(
       })
       .catch((err) => {
         console.error(err);
-        return res.status(422).json({ errors: errors.array() });
+        res.status(500).send("Error: " + err);
       });
   }
 );
@@ -104,7 +104,7 @@ app.get(
       })
       .catch((err) => {
         console.error(err);
-        return res.status(422).json({ errors: errors.array() });
+        res.status(500).send("Error: " + err);
       });
   }
 );
@@ -119,7 +119,7 @@ app.get(
         res.json(movie);
       })
       .catch((err) => {
-        return res.status(422).json({ errors: errors.array() });
+        res.status(500).send("Error: " + err);
       });
   }
 );
@@ -134,7 +134,7 @@ app.get(
         res.status(200).json(movie.Genre.Description);
       })
       .catch((err) => {
-        return res.status(422).json({ errors: errors.array() });
+        res.status(500).send("Error: " + err);
       });
   }
 );
@@ -149,7 +149,7 @@ app.get(
         res.status(200).json(movie.Director);
       })
       .catch((err) => {
-        return res.status(422).json({ errors: errors.array() });
+        res.status(500).send("Error: " + err);
       });
   }
 );
@@ -257,7 +257,7 @@ app.post(
       })
       .catch((err) => {
         console.error(err);
-        return res.status(422).json({ errors: errors.array() });
+        res.status(500).send("Error: " + err);
       });
   }
 );
@@ -277,7 +277,7 @@ app.delete(
       })
       .catch((err) => {
         console.error(err);
-        return res.status(422).json({ errors: errors.array() });
+        res.status(500).send("Error: " + err);
       });
   }
 );
