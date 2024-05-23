@@ -65,7 +65,15 @@ app.get("/", (req, res) => {
   res.send("Welcome to my movie page!");
 });
 
-// READ user list
+/**
+ * READ user list
+ * @name GET /users
+ * @function
+ * @param {Object} req - Request object to the server
+ * @param {Object} res - Response object from the server
+ * @returns {Object} - Returns JSON object holding data about all users
+ * @throws {Error} - Throws error if there is a problem retreiving users from the database
+ */
 app.get("/users", async (req, res) => {
   await Users.find()
     .then((users) => {
@@ -77,7 +85,16 @@ app.get("/users", async (req, res) => {
     });
 });
 
-// READ user by username
+/**
+ * READ user by username
+ * @name GET /users/:Username
+ * @function
+ * @param {Object} req - Request object to the server
+ * @param {Object} res - Response object from the server
+ * @param {string} req.params.Username - Username of user to retrieve
+ * @returns {Object} - Returns JSON object holding data about a single user containing a username property
+ * @throws {Error} - Throws error if there is a problem retreiving user from the database
+ */
 app.get(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
@@ -93,7 +110,15 @@ app.get(
   }
 );
 
-// READ movie list
+/**
+ * READ movie list
+ * @name GET /movies
+ * @function
+ * @param {Object} req - Request object to the server
+ * @param {Object} res - Response object from the server
+ * @returns {Object} - Returns JSON object holding data about all movies
+ * @throws {Error} - Throws error if there is a problem retreiving movies from the database
+ */
 app.get(
   "/movies",
   passport.authenticate("jwt", { session: false }),
@@ -109,7 +134,16 @@ app.get(
   }
 );
 
-//READ movie list by movie title
+/**
+ * READ movie by title
+ * @name GET /movies/:Title
+ * @function
+ * @param {Object} req - Request object to the server
+ * @param {Object} res - Response object from the server
+ * @param {string} req.params.Title - Title of the movie to retrieve
+ * @returns {Object} - Returns JSON object holding data about a single movie with title property
+ * @throws {Error} - Throws error if there is a problem retreiving user from the database
+ */
 app.get(
   "/movies/:Title",
   passport.authenticate("jwt", { session: false }),
@@ -124,7 +158,16 @@ app.get(
   }
 );
 
-//READ genre by name
+/**
+ * READ genre by name
+ * @name GET genres/:Genre
+ * @function
+ * @param {Object} req - Request object to the server
+ * @param {Object} res - Response object from the server
+ * @param {string} req.params.Genre - Name of the genre to retrieve
+ * @returns {Object} - Returns JSON object holding data about a single genre with the genre name as a property
+ * @throws {Error} - Throws error if there is a problem retreiving genre from the database
+ */
 app.get(
   "/movies/genres/:Genre",
   passport.authenticate("jwt", { session: false }),
@@ -139,7 +182,16 @@ app.get(
   }
 );
 
-// READ director by name
+/**
+ * READ director by name
+ * @name GET /movies/directors/:Director
+ * @function
+ * @param {Object} req - Request object to the server
+ * @param {Object} res - Response object from the server
+ * @param {string} req.params.Director - Name of the director to retrieve
+ * @returns {Object} - Returns JSON object holding data about a single director with the director name as a property
+ * @throws {Error} - Throws error if there is a problem retreiving director from the database
+ */
 app.get(
   "/movies/directors/:Director",
   passport.authenticate("jwt", { session: false }),
@@ -154,7 +206,16 @@ app.get(
   }
 );
 
-//CREATE New User
+/**
+ * CREATE new user
+ * @name POST /users
+ * @function
+ * @param {Object} req - Request object to the server
+ * @param {Object} res - Response object from the server
+ * @param {string} req.params.Username - Username of the user to create
+ * @returns {Object} - Returns JSON object holding data about a single user that was added including their username, password, email, and birthday.
+ * @throws {Error} - Throws error if there is a problem creating the user
+ */
 app.post(
   "/users",
   // Validation logic here for request
@@ -208,7 +269,16 @@ app.post(
   }
 );
 
-//UPDATE User's info
+/**
+ * UPDATE user information
+ * @name PUT /users/:Username
+ * @function
+ * @param {Object} req - Request object to the server
+ * @param {Object} res - Response object from the server
+ * @param {string} req.params.Username - Username of the user to update
+ * @returns {Object} - Returns JSON object of updated user information
+ * @throws {Error} - Throws error if there is a problem validating the input or updating user data in the database
+ */
 app.put(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
@@ -240,11 +310,25 @@ app.put(
   }
 );
 
-// Add a movie to a user's list of favorites
+/**
+ * UPDATE user's favorite movies list
+ * @name POST /users/:Username/movies/:MovieID
+ * @function
+ * @param {Object} req - Request object to the server
+ * @param {Object} req.user - User object obtained from JWT authentication.
+ * @param {Object} res - Response object from the server
+ * @param {string} req.params.Username - Username of the user to update
+ * @param {string} req.params.MovieID - ID of the movie to add to the user's list of favorite movies.
+ * @returns {Object} - Returns JSON object of updated list of user's favorite movies
+ * @throws {Error} - Throws error if there is a problem adding a movie to the user's favorites list
+ */
 app.post(
   "/users/:Username/movies/:MovieID",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
+    if (req.user.Username !== req.params.Username) {
+      return res.status(400).send('Permission denied');
+    }
     await Users.findOneAndUpdate(
       { Username: req.params.Username },
       {
@@ -262,11 +346,24 @@ app.post(
   }
 );
 
-// Delete a user by username
+/**
+ * DELETE user account
+ * @name DELETE /users/:Username
+ * @function
+ * @param {Object} req - Request object to the server
+ * @param {Object} req.user - User object obtained from JWT authentication.
+ * @param {string} req.params.Username - Username of the user to update
+ * @param {Object} res - Response object from the server
+ * @returns {Object} - Returns alert letting user know if account was deleted or not found
+ * @throws {Error} - Throws error if there is a problem removing a movie from the user's favorites list
+ */
 app.delete(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
+    if (req.user.Username !== req.params.Username) {
+      return res.status(400).send('Permission denied');
+    }
     await Users.findOneAndDelete({ Username: req.params.Username })
       .then((user) => {
         if (!user) {
@@ -282,11 +379,25 @@ app.delete(
   }
 );
 
-// DELETE favorite movie for user
+/**
+ * DELETE favorite movie for user
+ * @name DELETE /users/:Username/movies/:MovieID
+ * @function
+ * @param {Object} req - Request object to the server
+ * @param {Object} req.user - User object obtained from JWT authentication.
+ * @param {Object} res - Response object from the server
+ * @param {string} req.params.Username - Username of the user to update
+ * @param {string} req.params.MovieID - ID of the movie to remove from the user's list of favorite movies.
+ * @returns {Object} - Returns JSON object of updated list of user's favorite movies
+ * @throws {Error} - Throws error if there is a problem removing a movie from the user's favorites list
+ */
 app.delete(
   "/users/:Username/movies/:MovieID",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
+    if (req.user.Username !== req.params.Username) {
+      return res.status(400).send('Permission denied');
+    }
     await Users.findOneAndUpdate(
       { Username: req.params.Username },
       {
