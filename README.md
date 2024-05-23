@@ -32,49 +32,47 @@ This REST API is the server-side component of the MyFlix web application. The AP
 
 ## GET all movies
 
-* URL: /movies
+* URL: `/movies`
 
 ## GET movie by title
 
-* URL: /movies/[Title]
+* URL: `/movies/[Title]`
 
 ## GET all users
 
-* URL: /users
+* URL: `/users`
 
 ## GET user by username
 
-* URL: /users/[Username]
+* URL: `/users/[Username]`
 
 ## GET genre information
 
-* URL: /movies/genres/[Genre]
+* URL: `/movies/genres/[Genre]`
 
 ## GET director information
 
-* URL: /movies/directors/[Director]
+* URL: `/movies/directors/[Director]`
 
 ## POST new user (register)
 
-* URL: /users
+* URL: `/users`
 
 ## PUT user information (update user information)
 
-* URL: /users/[Username]
+* URL: `/users/[Username]`
 
 ## POST movie to user's favorite movies list
 
-* URL: /users/[Username]/movies/[MovieID]
+* URL: `/users/[Username]/movies/[MovieID]`
 
 ## DELETE movie from user's favorite movies list
 
-* URL: /users/[Username]/movies/[MovieID]
+* URL: `/users/[Username]/movies/[MovieID]`
 
 ## DELETE user account
 
-* URL: /users/:Username
-
-
+* URL: `/users/:Username`
 
 
 
