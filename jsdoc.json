@@ -1,0 +1,5 @@
+{
+    "entryPointStrategy": "expand",
+    "entryPoints": ["./index.js"],
+    "out": "./docs"
+  }
