@@ -21,8 +21,8 @@ let allowedOrigins = [
   "https://myflix-nehakhan77.netlify.app",
   "https://nehakhan77.github.io/myflix-angular-client/welcome", 
   "https://nehakhan77.github.io/myflix-angular-client/profile",
-   "https://nehakhan77.github.io/myflix-angular-client/movies", 
-   "https://nehakhan77.github.io"
+  "https://nehakhan77.github.io/myflix-angular-client/movies", 
+  "https://nehakhan77.github.io"
 ];
 //allow specific set of origins to access your API
 app.use(
